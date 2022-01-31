@@ -7,6 +7,7 @@ var currentCity = $('#current-city');
 var todaysTemp = $('#today-temp');
 var todaysHumidity = $('#today-humidity');
 var todaysWind = $('#today-wind');
+var uv = $('#uv');
 var uvIndex = $('#uv-index');
 var weatherDiv = $('#weather-div');
 var todayWeatherIcon = $('#today-weather-icon')
@@ -21,13 +22,13 @@ $('#today-date').text(` ${todaysDate}`);
 var cities = [];
 
 // create variable for current city that was searched
-var cityNamess = ''
+var cityNamexxxxxx = ''
 //function to get current weather conditions
 
 function getConditions(cityName) {
     var searchQueryUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=" + apiKey;
     console.log(searchQueryUrl);
-
+    //fetch daily weather info for city that was searched (cityname variable)
     fetch(searchQueryUrl)
         .then(function (response) {
 
@@ -40,35 +41,30 @@ function getConditions(cityName) {
             currentCity.text(data.name)
             todayWeatherIcon.attr("src", "http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png");
             //display wind, temp, and humidity for current day
-            todaysTemp.text("Temp: " + data.main.temp + " °F");
-            todaysWind.text("wind: " + data.wind.speed + " MPH");
-            todaysHumidity.text("Humidity: " + data.main.humidity + " %");
+            todaysTemp.text(data.main.temp + " °F");
+            todaysWind.text(data.wind.speed + " MPH");
+            todaysHumidity.text(data.main.humidity + " %");
 
-
-            var uvUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + data.coord.lat + "&lon=" + data.coord.lon + "&appid=" + APIkey
-            fetch(uvUrl)
+            //fetch call using onecall api for uv data using lat and long  data from previous fetch
+            var uvFetchUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + data.coord.lat + "&lon=" + data.coord.lon + "&appid=" + apiKey
+            fetch(uvFetchUrl)
                 .then(function (response) {
-
-                    return response.json()
-
+                    return response.json();
                 }).then(function (data) {
-
-                    console.log(uvUrl)
-
-                    nowIndexNumberEl.textContent = data.current.uvi
-
-                    console.log(nowIndexNumberEl)
-                    if (data.current.uvi <= 2) {
-                        nowIndexNumberEl.setAttribute("class", "favorable")
-                    } else if (data.current.uvi > 2 && data.current.uvi <= 8) {
-                        nowIndexNumberEl.setAttribute("class", "moderate")
+                    console.log(data);
+                    //vriable for current uv index value,
+                    var uvToday = data.current.uvi; 
+                    uvIndex.text(uvToday);
+                    console.log(uvToday);
+                    //check current UV index value, change class depending on value
+                    if (uvToday <= 2) {
+                        uv.addClass('favorable');
+                    } else if (uvToday > 2 && uvToday <= 8) {
+                        uv.addClass('moderate');
                     }
-                    else if (data.current.uvi > 8) {
-                        nowIndexNumberEl.setAttribute("class", "severe")
+                    else if (uvToday > 8) {
+                        uv.addClass('severe');
                     };
-
-                    console.log(nowIndex)
-
                 }
                 )
 
