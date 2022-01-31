@@ -72,6 +72,30 @@ function getConditions(cityName) {
    
 };
 
+//function to get 5 day forecast
 
-getConditions('london');
+function get5DayForecast(cityname) {
+    var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityname + "&cnt=5&units=imperial&appid=" + apiKey;
+    
+    fetch(forecastURL)
+        .then(function (response) {
+            return response.json()
 
+        }).then(function (forecastData) {
+            var forecastArray = [];
+            console.log(forecastData);
+            for (var i = 0; i < forecastData.list.length; i++) {
+                forecastArray.push({
+                    date: forecastData.list[i].dt_txt.split(" ")[0],
+                    icon: forecastData.list[i].weather[0].icon,
+                    temp: forecastData.list[i].main.temp,
+                    wind: forecastData.list[i].wind.speed,
+                    humidity: forecastData.list[i].main.humidity,
+                })
+            }
+            console.log(forecastArray);
+        })
+}
+
+// getConditions('london');
+get5DayForecast('london');
