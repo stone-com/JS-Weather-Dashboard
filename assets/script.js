@@ -21,8 +21,7 @@ $('#today-date').text(` ${todaysDate}`);
 //create empty array for city list search history
 var cities = [];
 
-// create variable for current city that was searched
-var cityNamexxxxxx = ''
+
 //function to get current weather conditions
 
 function getConditions(cityName) {
@@ -72,19 +71,26 @@ function getConditions(cityName) {
    
 };
 
+
+
 //function to get 5 day forecast
 
-function get5DayForecast(cityname) {
-    var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityname + "&cnt=5&units=imperial&appid=" + apiKey;
-    
+function get5DayForecast(cityName) {
+    var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=imperial&appid=" + apiKey;
+    //create new array
+    var forecastArray = [];
     fetch(forecastURL)
         .then(function (response) {
             return response.json()
 
         }).then(function (forecastData) {
-            var forecastArray = [];
+            
             console.log(forecastData);
-            for (var i = 0; i < forecastData.list.length; i++) {
+            //loop through forecast data and push to forecast array
+            //api returns 40 results, 8 per day, every 3 hours
+            //iterate by +8 to get one result per day
+            //this took me forever to figure out lol
+            for (var i = 0; i < forecastData.list.length; i+=8) {
                 forecastArray.push({
                     date: forecastData.list[i].dt_txt.split(" ")[0],
                     icon: forecastData.list[i].weather[0].icon,
@@ -94,8 +100,42 @@ function get5DayForecast(cityname) {
                 })
             }
             console.log(forecastArray);
-        })
+        }).then(function() {
+            //remove all child nodes of 5 day forecast row to make room for new forcast
+            $('#five-day-forecast').empty();
+            //loop through forecast array and create card for each day
+            for (var i=0; i<forecastArray.length; i++) {
+                var col = $("<div class='col-12 col-md-6 col-lg forecast-day mb-3'>");
+                var newCard = $("<div class='card'>");
+                var newCardBody = $("<div class='card-body'>");
+                var newDate = $("<h5 class='card-title'>");
+                var newIcon = $("<img>");
+                var newTemp = $("<p class='card-text mb-0'>");
+                var newHumidity = $("<p class='card-text mb-0'>");
+                //append new column to five day forecast row
+                $("#five-day-forecast").append(col);
+                //append card to column
+                col.append(newCard);
+                //append cardbody to card
+                newCard.append(newCardBody);
+                //append date, icon, temp, and humidity to the card body
+                newCardBody.append(newDate);
+                newCardBody.append(newIcon);
+                newCardBody.append(newTemp);
+                newCardBody.append(newHumidity);
+
+                newDate.text(forecastArray[i].date)
+                newIcon.attr("src", "https://openweathermap.org/img/w/" + forecastArray[i].icon + ".png");
+                newTemp.text(`Temperature: ${forecastArray[i].temp}°F`);
+                newHumidity.text(`Humidity: ${forecastArray[i].humidity}%`)
+                
+        }
+    })
 }
 
-// getConditions('london');
-get5DayForecast('london');
+citySearchBtn.on("click", function() {
+    // create variable for current city that was searched
+    var cityName = $('#city-search').val();
+    getConditions(cityName);
+    get5DayForecast(cityName);
+})
