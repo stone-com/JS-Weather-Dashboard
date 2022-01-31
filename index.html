@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <title>Weather Dashboard</title>
+</head>
+<body>
+    <div class="container-fluid h-100">
+        <!-- Navbar / Header -->
+        <div class="row navbar navbar-dark bg-dark">
+            <h1 class="navbar-brand mx-auto">
+                Stone's Weather Dashboard
+            </h1>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-3 bg-light pt-3">
+                <!-- user search for a city -->
+                <h5 class="text-center">Search for a city:</h5>
+                <form>
+                    <div class="input-group form-group">
+                        <input type="text" class="form-control" id="city-search" placeholder="Enter a city">
+                        <div class="input-group-append">
+                            <button class="btn btn-info" type="button" id="city-search-btn">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <!-- User search history section -->
+                <div class="card">
+                    <ul class="list-group" id="search-history">
+                        <!-- previous search history displayed here from localsorage -->
+                        <!-- items will get 'list group item' class -->
+                    </ul>
+                    <button id="clear-button" class="btn btn-sm btn-secondary">
+                        Clear Search History
+                    </button>
+                </div>
+            </div>
+            <!-- Todays weather content div -->
+            <div id="weather-div" class="col-12 col-md-9">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="border rounded my-3 py-3">
+                            <div class="col-12 text-center">
+                                <h2 id="current-city">City Name</h2>
+                                <h3 id="today-date"></h3>
+                                <img id="today-weather-icon"></img>
+                                
+                            </div>
+                            <div class="row">
+                                <p class="mb-1 text-center col-6">Temperature:<span id="today-temp"></span></p>
+                                <p class="mb-1 text-center col-6">Humidity:<span id="today-humidity"></span></p>
+                            </div>
+                           <div class="row">
+                            <p class="mb-0 text-center col-6">Wind Speed:<span id="today-wind"></span></p>
+                            <p class="text-center col-6">UV Index:<span id="uv-index"></span></p>
+                           </div>
+                          
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <h3>5 Day Forecast</h3>
+                    </div>
+                </div>
+                <div id="five-day-forecast" class="row">
+                    <div class="col-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    Date
+                                </h5>
+                                <i class="fa fa-sun"></i>
+                                <p class="card-text">Temperature:</p>
+                                <p class="card-text">Humidity:</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 5 day forcast section -->
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
+    <script src="assets/script.js"></script>
+</body>
+</html>
