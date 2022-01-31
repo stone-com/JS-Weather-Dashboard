@@ -18,15 +18,14 @@ var todaysDate = moment().format('L');
 //display current date on the page next to city name
 $('#today-date').text(` ${todaysDate}`);
 
-//create empty array for city list search history
-var cities = [];
+//variable for search history
+var historyArray = JSON.parse(localStorage.getItem("city")) || [];
 
 
 //function to get current weather conditions
 
 function getConditions(cityName) {
     var searchQueryUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=" + apiKey;
-    console.log(searchQueryUrl);
     //fetch daily weather info for city that was searched (cityname variable)
     fetch(searchQueryUrl)
         .then(function (response) {
@@ -66,9 +65,7 @@ function getConditions(cityName) {
                     };
                 }
                 )
-
-        })
-   
+        }) 
 };
 
 
@@ -84,8 +81,6 @@ function get5DayForecast(cityName) {
             return response.json()
 
         }).then(function (forecastData) {
-            
-            console.log(forecastData);
             //loop through forecast data and push to forecast array
             //api returns 40 results, 8 per day, every 3 hours
             //iterate by +8 to get one result per day
@@ -112,7 +107,7 @@ function get5DayForecast(cityName) {
                 var newIcon = $("<img>");
                 var newTemp = $("<p class='card-text mb-0'>");
                 var newHumidity = $("<p class='card-text mb-0'>");
-                //append new column to five day forecast row
+                //append new column to five day forecast row to display on page
                 $("#five-day-forecast").append(col);
                 //append card to column
                 col.append(newCard);
@@ -133,9 +128,31 @@ function get5DayForecast(cityName) {
     })
 }
 
+
+
 citySearchBtn.on("click", function() {
+    if($("#city-search").val() === ""){
+        return;
+    }
+    //remove hide class to show weather div when user makes a search for a city
+    weatherDiv.removeClass("hide");
     // create variable for current city that was searched
     var cityName = $('#city-search').val();
+    //create new button for searched city
+    var cityBtn = $("<button>");
+    cityBtn.addClass("list-group-item");
+    cityBtn.addClass("btn");
+    cityBtn.attr("type", "button");
+    cityBtn.text(cityName); 
+    //append button to search history list
+    searchHistory.append(cityBtn);
+    //push searched city to history array
+    historyArray.push(cityName);
+    //save history to localstorage and turn into string
+    localStorage.setItem("city", JSON.stringify(historyArray));
+
+
+
     getConditions(cityName);
     get5DayForecast(cityName);
 })
