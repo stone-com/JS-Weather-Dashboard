@@ -156,3 +156,24 @@ citySearchBtn.on("click", function() {
     getConditions(cityName);
     get5DayForecast(cityName);
 })
+
+//function to load history on page load and display on page
+
+function showHistory() {
+    if (historyArray != []) {
+        for(var i=0; i<historyArray.length; i++) {
+        //create new button el for each item in history array
+        var cityBtn = $("<button>");
+        cityBtn.addClass("list-group-item");
+        cityBtn.addClass("btn");
+        cityBtn.attr("type", "button");
+        //set button text content to array index (city name)
+        cityBtn.text(historyArray[i]); 
+        //append button to search history list
+        searchHistory.append(cityBtn);
+        }
+    }
+}
+
+showHistory();
+console.log(historyArray);
