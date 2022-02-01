@@ -142,6 +142,7 @@ citySearchBtn.on("click", function() {
     var cityBtn = $("<button>");
     cityBtn.addClass("list-group-item");
     cityBtn.addClass("btn");
+    cityBtn.attr("name", cityName);
     cityBtn.attr("type", "button");
     cityBtn.text(cityName); 
     //append button to search history list
@@ -160,12 +161,14 @@ citySearchBtn.on("click", function() {
 //function to load history on page load and display on page
 
 function showHistory() {
+    
     if (historyArray != []) {
         for(var i=0; i<historyArray.length; i++) {
         //create new button el for each item in history array
         var cityBtn = $("<button>");
         cityBtn.addClass("list-group-item");
         cityBtn.addClass("btn");
+        cityBtn.attr("name", historyArray[i]);
         cityBtn.attr("type", "button");
         //set button text content to array index (city name)
         cityBtn.text(historyArray[i]); 
@@ -174,6 +177,19 @@ function showHistory() {
         }
     }
 }
+
+
+
+//event handler for clicking previous searched city in history array
+
+searchHistory.on("click", function(event){
+    console.log(event.target.name);
+    //get 'name' attribute from clicked button, set it to cityName, and call getconditions and get5day functions
+    var cityName = event.target.name
+    getConditions(cityName);
+    get5DayForecast(cityName);
+});
+
 
 showHistory();
 console.log(historyArray);
