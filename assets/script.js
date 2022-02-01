@@ -183,6 +183,7 @@ function showHistory() {
 //event handler for clicking previous searched city in history array
 
 searchHistory.on("click", function(event){
+    weatherDiv.removeClass("hide");
     console.log(event.target.name);
     //get 'name' attribute from clicked button, set it to cityName, and call getconditions and get5day functions
     var cityName = event.target.name
@@ -190,6 +191,10 @@ searchHistory.on("click", function(event){
     get5DayForecast(cityName);
 });
 
+clearBtn.on("click", function() {
+    localStorage.clear();
+    searchHistory.empty();
+})
 
 showHistory();
 console.log(historyArray);
