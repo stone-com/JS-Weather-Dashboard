@@ -106,6 +106,7 @@ function get5DayForecast(cityName) {
                 var newDate = $("<h5 class='card-title'>");
                 var newIcon = $("<img>");
                 var newTemp = $("<p class='card-text mb-0'>");
+                var newWind = $("<p class='card-text mb-0'>");
                 var newHumidity = $("<p class='card-text mb-0'>");
                 //append new column to five day forecast row to display on page
                 $("#five-day-forecast").append(col);
@@ -118,11 +119,13 @@ function get5DayForecast(cityName) {
                 newCardBody.append(newIcon);
                 newCardBody.append(newTemp);
                 newCardBody.append(newHumidity);
+                newCardBody.append(newWind);
 
                 newDate.text(forecastArray[i].date)
                 newIcon.attr("src", "https://openweathermap.org/img/w/" + forecastArray[i].icon + ".png");
                 newTemp.text(`Temperature: ${forecastArray[i].temp}°F`);
-                newHumidity.text(`Humidity: ${forecastArray[i].humidity}%`)
+                newHumidity.text(`Humidity: ${forecastArray[i].humidity}%`);
+                newWind.text(`Wind: ${forecastArray[i].wind} mph`);
                 
         }
     })
